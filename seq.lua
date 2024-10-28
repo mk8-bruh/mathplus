@@ -31,7 +31,7 @@ lib = {
 	fromString = function(s)
 		if type(s) == 'string' then
 			local t = {}
-            for p in s:gmatch("[^%(%{%[%)%}%],;]") do
+            for p in s:gmatch("[^%(%{%[%)%}%],;]+") do
                 if tonumber(p) then table.insert(t, tonumber(p)) else break end
             end
             return lib.new(t)
