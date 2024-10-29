@@ -13,7 +13,7 @@ lib = {
 	new = function(...)
         local t, r = {...}, {}
         if #t == 0 then return setmetatable({}, mt)
-        elseif #t == 1 and type(t[1]) == "table" then t = t[1] end
+        elseif #t == 1 and type(t[1]) == "table" and #t[1] > 0 then t = t[1] end
         for i = 1, #t do r[i] = t[i] end
         return setmetatable(r, mt)
     end,
