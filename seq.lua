@@ -76,7 +76,7 @@ lib = {
     product = function(s, l)
         if lib.is(s) then
             l = (type(l) == "function" and l) or lambda(l, s, getfenv(2)) or lambda("x", s, getfenv(2))
-            local v = 0
+            local v = 1
             for i = 1, #s do if isn(l(s[i])) then v = v * l(s[i]) else return end end
             return v
         end
