@@ -77,7 +77,7 @@ lib = {
             )
         end
     end,
-    euler = function(q)
+    toEuler = function(q)
         if lib.is(q) then
             return vec3(
                 2*atan2(sqrt(1 + 2*(q.w * q.y - q.x * q.z)), sqrt(1 - 2*(q.w * q.y - q.x * q.z))) - math.pi/2,
