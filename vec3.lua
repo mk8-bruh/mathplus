@@ -144,7 +144,7 @@ mt = {
 	__unm = function(v) return lib.new(-v.x, -v.y, -v.z) end,
 	__len = function(v) return v.len end,
 	__tostring = function(v) return fstr('%f,%f,%f', v.x, v.y, v.z) end,
-	__index = function(v, k) if k == "len" then return sqrt(v.len) elseif k == "sqrLen" then return v:dot(v) elseif k == "norm" then return v:normal() else return lib[k] end end
+	__index = function(v, k) if k == "len" then return sqrt(v.sqrLen) elseif k == "sqrLen" then return v:dot(v) elseif k == "norm" then return v:normal() else return lib[k] end end
 }
 
 return setmetatable({}, {
