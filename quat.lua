@@ -66,9 +66,9 @@ lib = {
     fromEuler = function(x, y, z)
         local r = vec3.is(x) and x or vec3(x, y, z)
         if vec3.is(r) then
-            local cx, sx = cos(x/2), sin(x/2)
-            local cy, sy = cos(y/2), sin(y/2)
-            local cz, sz = cos(z/2), sin(z/2)
+            local cx, sx = cos(r.x/2), sin(r.x/2)
+            local cy, sy = cos(r.y/2), sin(r.y/2)
+            local cz, sz = cos(r.z/2), sin(r.z/2)
             return lib.new(
                 sz * cx * cy - cz * sx * sy,
                 cz * sx * cy + sz * cx * sy,
