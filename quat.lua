@@ -43,7 +43,7 @@ lib = {
 	end,
     conjugate = function(q)
         if lib.is(q) then
-            return lib.new(-q.x, -q.y, -q.z, q.w) / (q.x*q.x + q.y*q.y + q.z*q.z + q.w*q.w)
+            return lib.new(-q.x, -q.y, -q.z, q.w)
         end
     end,
     dot = function(a, b)
