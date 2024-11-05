@@ -113,11 +113,7 @@ mt = {
                 a.w*b.w - a.x*b.x - a.y*b.y - a.z*b.z
             )
 		elseif lib.is(a) and vec3.is(b) then
-			return vec3(
-                a.w*b.x + a.y*b.z - a.z*b.y,
-                a.w*b.y + a.z*b.x - a.x*b.z,
-                a.w*b.z + a.x*b.y - a.y*b.x
-            )
+			return vec3((a * lib.new(b.x, b.y, b.z, 0) * a:conjugate()):unpack())
         elseif lib.is(a) and isn(b) then
             return lib.new(a.x*b, a.y*b, a.z*b, a.w*b)
         end
