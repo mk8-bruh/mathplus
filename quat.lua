@@ -69,7 +69,7 @@ lib = {
             local cx, sx = cos(r.x / 2), sin(r.x / 2)
             local cy, sy = cos(r.y / 2), sin(r.y / 2)
             local cz, sz = cos(r.z / 2), sin(r.z / 2)
-            return lib.new(0, sy, 0, cy) * lib.new(sx, 0, 0, cx) * lib.new(0, 0, sz, cz)
+            return lib.new(0, 0, sz, cz) * lib.new(sx, 0, 0, cx) * lib.new(0, sy, 0, cy)
         end
     end,
     toEuler = function(q)
