@@ -84,7 +84,7 @@ lib = {
     end,
     between = function(a, b)
         if vec3.is(a) and vec3.is(b) then
-            return lib.axisAngle(a:cross(b), a:angle(b))
+            return lib.axisAngle(-a:cross(b), a:angle(b))
         end
     end,
     rotate = function(q, v)

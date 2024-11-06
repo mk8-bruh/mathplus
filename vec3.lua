@@ -101,44 +101,44 @@ lib = {
 mt = {
 	__add = function(a, b)
 		if lib.is(a) and lib.is(b) then
-			return lib.new(a.x+b.x, a.y+b.y, a.z+b.z)
+			return lib.new(a.x + b.x, a.y + b.y, a.z + b.z)
 		end
 	end,
 	__sub = function(a, b)
 		if lib.is(a) and lib.is(b) then
-			return lib.new(a.x-b.x, a.y-b.y, a.z-b.z)
+			return lib.new(a.x - b.x, a.y - b.y, a.z - b.z)
 		end
 	end,
 	__mul = function(a, b)
 		if lib.is(a) and lib.is(b) then
-			return lib.new(a.x*b.x, a.y*b.y, a.z*b.z)
+			return lib.new(a.x * b.x, a.y * b.y, a.z * b.z)
 		elseif lib.is(a) and isn(b) then
-			return lib.new(a.x*b, a.y*b, a.z*b)
+			return lib.new(a.x * b, a.y * b, a.z * b)
 		elseif isn(a) and lib.is(b) then
-			return lib.new(a*b.x, a*b.y, a*b.z)
+			return lib.new(a * b.x, a * b.y, a * b.z)
 		end
 	end,
 	__div = function(a, b)
 		if lib.is(a) and lib.is(b) then
-			return lib.new(a.x/b.x, a.y/b.y, a.z/b.z)
+			return lib.new(a.x / b.x, a.y / b.y, a.z / b.z)
 		elseif lib.is(a) and isn(b) then
-			return lib.new(a.x/b, a.y/b, a.z/b)
+			return lib.new(a.x / b, a.y / b, a.z / b)
 		elseif isn(a) and lib.is(b) then
-			return lib.new(a/b.x, a/b.y, a/b.z)
+			return lib.new(a / b.x, a / b.y, a / b.z)
 		end
 	end,
 	__pow = function(a, b)
         if lib.is(a) and isn(b) then
-            return lib.new(a.x^b, a.y^b, a.z^b)
+            return lib.new(a.x ^ b, a.y ^ b, a.z ^ b)
         elseif lib.is(a) and lib.is(b) then
-            return lib.new(a.x^b.x, a.y^b.y, a.z^b)
+            return lib.new(a.x ^ b.x, a.y ^ b.y, a.z ^ b.z)
         end
 	end,
     __mod = function(a, b)
         if lib.is(a) and isn(b) then
-            return lib.new(a.x%b, a.y%b, a.z%b)
+            return lib.new(a.x % b, a.y % b, a.z % b)
         elseif lib.is(a) and lib.is(b) then
-            return lib.new(a.x%b.x, a.y%b.y, a.z%b.z)
+            return lib.new(a.x % b.x, a.y % b.y, a.z % b.z)
         end
     end,
 	__unm = function(v) return lib.new(-v.x, -v.y, -v.z) end,
