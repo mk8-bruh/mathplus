@@ -27,7 +27,7 @@ lib = {
     end,
     fromString = function(s)
         if type(s) == 'string' then
-            local x, y, z, w = s:match('[%(%{%[]?(.-)[,;](.-)[,;](.-)[,;](.-)[%)%}%]]?')
+            local x, y, z, w = s:match('^%s*[%(%{%[]?(.-)[,;](.-)[,;](.-)[,;](.-)[%)%}%]]?^%s*')
             if tonumber(x) and tonumber(y) and tonumber(z) and tonumber(w) then
                 return lib.new(tonumber(x), tonumber(y), tonumber(z), tonumber(w))
             end
@@ -44,6 +44,11 @@ lib = {
     conjugate = function(q)
         if lib.is(q) then
             return lib.new(-q.x, -q.y, -q.z, q.w)
+        end
+    end,
+    inverse = function(q)
+        if lib.is(q) then
+            return q:conjugate() / q.sqrLen
         end
     end,
     dot = function(a, b)
@@ -130,14 +135,15 @@ mt = {
             return lib.new(a.x / b, a.y / b, a.z / b, a.w / b)
         end
     end,
-    __unm = function(v) return lib.new(-v.x, -v.y, -v.z, -v.w) / v.sqrLen end,
-    __len = function(v) return v.len end,
-    __tostring = function(v) return fstr('%f,%f,%f,%f', v.x, v.y, v.z, v.w) end,
-    __index = function(v, k)
-        if k == "len" then return sqrt(v.sqrLen)
-        elseif k == "sqrLen" then return v:dot(v)
-        elseif k == "norm" then return v:normal()
-        elseif k == "conj" then return v:conjugate()
+    __unm = function(q) return lib.new(-q.x, -q.y, -q.z, -q.w) end,
+    __len = function(q) return q.len end,
+    __tostring = function(q) return fstr('%f,%f,%f,%f', q.x, q.y, q.z, q.w) end,
+    __index = function(q, k)
+        if k == "len" then return sqrt(q.sqrLen)
+        elseif k == "sqrLen" then return q:dot(q)
+        elseif k == "norm" then return q:normal()
+        elseif k == "conj" then return q:conjugate()
+        elseif k == "inv" then return q:inverse()
         else return lib[k]
         end
     end

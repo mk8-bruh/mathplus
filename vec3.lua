@@ -1,7 +1,10 @@
+local _PATH = (...):match("(.-)[^%.]+$")
+
 local sqrt, abs, sin, cos, asin, acos, atan2 = math.sqrt, math.abs, math.sin, math.cos, math.asin, math.acos, math.atan2
 local sign = function(x) return x ~= 0 and x / abs(x) or 0 end
 local fstr = string.format
 local isn, nbetween = function(x) return type(x) == 'number' end, function(x, a, b) return x >= a and x <= b end
+local ang = function(x) return math.pi - ((math.pi - x) % (2*math.pi)) end
 
 local lib, mt
 lib = {
@@ -23,7 +26,7 @@ lib = {
 	end,
 	fromString = function(s)
 		if type(s) == 'string' then
-			local x, y, z = s:match('[%(%{%[]?(.-)[,;](.-)[,;](.-)[%)%}%]]?')
+			local x, y, z = s:match('^%s*[%(%{%[]?(.-)[,;](.-)[,;](.-)[%)%}%]]?%s*$')
 			if tonumber(x) and tonumber(y) and tonumber(z) then
 				return lib.new(tonumber(x), tonumber(y), tonumber(z))
 			end
@@ -40,6 +43,13 @@ lib = {
         end
         return t
 	end,
+	zero    = function() return lib.new( 0,  0,  0) end,
+	left    = function() return lib.new(-1,  0,  0) end,
+	right   = function() return lib.new( 1,  0,  0) end,
+	up      = function() return lib.new( 0, -1,  0) end,
+	down    = function() return lib.new( 0,  1,  0) end,
+	back    = function() return lib.new( 0,  0, -1) end,
+	forward = function() return lib.new( 0,  0,  1) end,
 	normal = function(v)
 		if lib.is(v) then
 			return v.len > 0 and v/v.len or lib.new(0, 0, 0)
@@ -62,7 +72,12 @@ lib = {
 	end,
     signedAngle = function(a, b, n)
         if lib.is(a) and lib.is(b) then
-            return atan2(a:cross(b):dot(n), a:dot(b))
+			if not n then
+				n = a:cross(b)
+			end
+			if lib.is(n) then
+            	return sign(a:cross(b):dot(n)) * ang(atan2(a:cross(b).len, a:dot(b)))
+			end
         end
     end,
 	lerp = function(a, b, t)

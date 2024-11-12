@@ -1,6 +1,11 @@
+local _PATH = (...):match("(.-)[^%.]+$")
+
 local sqrt, abs, sin, cos, atan2 = math.sqrt, math.abs, math.sin, math.cos, math.atan2
 local fstr = string.format
 local isn, nbetween = function(x) return type(x) == 'number' end, function(x, a, b) return x >= a and x <= b end
+local ang = function(x) return math.pi - ((math.pi - x) % (2*math.pi)) end
+
+local vec3 = require(_PATH.."vec3")
 
 local lib, mt
 lib = {
@@ -9,7 +14,7 @@ lib = {
             return setmetatable({x = x, y = y}, mt)
         end
     end,
-	is = function(v) return type(v) == "table" and isn(v.x) and isn(v.y) and getmetatable(v) == mt end,
+	is = function(v) return type(v) == "table" and isn(v.x) and isn(v.y) and getmetatable(v) == mt or vec3.is(v) end,
 	unpack = function(v)
 		if lib.is(v) then
 			return v.x, v.y
@@ -22,7 +27,7 @@ lib = {
 	end,
 	fromString = function(s)
 		if type(s) == 'string' then
-			local x, y = s:match('[%(%{%[]?(.-)[,;](.-)[%)%}%]]?')
+			local x, y = s:match('^%s*[%(%{%[]?(.-)[,;](.-)[%)%}%]]?%s*$')
 			if tonumber(x) and tonumber(y) then
 				return lib.new(tonumber(x), tonumber(y))
 			end
@@ -38,6 +43,11 @@ lib = {
         end
         return t
 	end,
+	zero  = function() return lib.new( 0,  0) end,
+	left  = function() return lib.new(-1,  0) end,
+	right = function() return lib.new( 1,  0) end,
+	up    = function() return lib.new( 0, -1) end,
+	down  = function() return lib.new( 0,  1) end,
 	normal = function(v)
 		if lib.is(v) then
 			return v.len > 0 and v/v.len or lib.new(0, 0)
@@ -55,12 +65,12 @@ lib = {
 	end,
 	angle = function(v)
 		if lib.is(v) then
-			return atan2(v.y, v.x)
+			return ang(atan2(v.y, v.x))
 		end
 	end,
 	angleTo = function(a, b)
 		if lib.is(a) and lib.is(b) then
-			return a:angle() - b:angle()
+			return ang(a:angle() - b:angle())
 		end
 	end,
 	polar = function(a)
@@ -70,7 +80,8 @@ lib = {
 	end,
 	rotate = function(v, a)
 		if lib.is(v) and isn(a) then
-            return lib.polar(v:angle() + a) * v.len
+            local s, c = sin(a), cos(a)
+			return lib.new(v.x * c - v.y * s, v.x * s + v.y * c)
 		end
 	end,
 	lerp = function(a, b, t)
