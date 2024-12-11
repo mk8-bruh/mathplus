@@ -70,7 +70,7 @@ lib = {
 	end,
 	angleTo = function(a, b)
 		if lib.is(a) and lib.is(b) then
-			return ang(a:angle() - b:angle())
+			return ang(lib.angle(a) - lib.angle(b))
 		end
 	end,
 	polar = function(a)
@@ -91,12 +91,12 @@ lib = {
 	end,
 	moveTo = function(a, b, d)
 		if lib.is(a) and lib.is(b) and isn(d) then
-			return a + (b - a):normal() * d
+			return a + lib.normal(b - a) * d
 		end
 	end,
 	project = function(a, b)
         if lib.is(a) and lib.is(b) then
-			return a:dot(b) / b.sqrLen * b
+			return lib.dot(a, b) / b.sqrLen * b
 		end
 	end,
     maxLen = function(v, l)

@@ -44,6 +44,7 @@ lib = {
         return t
 	end,
 	zero    = function() return lib.new( 0,  0,  0) end,
+	one     = function() return lib.new( 1,  1,  1) end,
 	left    = function() return lib.new(-1,  0,  0) end,
 	right   = function() return lib.new( 1,  0,  0) end,
 	up      = function() return lib.new( 0, -1,  0) end,
@@ -90,9 +91,22 @@ lib = {
 			return a + (b - a):normal() * d
 		end
 	end,
+	collinear = function(a, b)
+		if lib.is(a) and lib.is(b) then
+			local q = b/a
+			if q.x == q.y == q.z then
+				return q.x
+			end
+		end
+	end,
 	project = function(a, b)
         if lib.is(a) and lib.is(b) then
 			return a:dot(b) / b.sqrLen * b
+		end
+	end,
+	projectOnPlane = function(a, b)
+		if lib.is(a) and lib.is(b) then
+			return a - a:project(b)
 		end
 	end,
     maxLen = function(v, l)
