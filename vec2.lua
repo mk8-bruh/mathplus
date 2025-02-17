@@ -50,7 +50,7 @@ lib = {
 	down  = function() return lib.new( 0,  1) end,
 	normal = function(v)
 		if lib.is(v) then
-			return v.len > 0 and v/v.len or lib.new(0, 0)
+			return v.len > 0 and v/v.len or lib.zero()
 		end
 	end,
 	dot = function(a, b)
@@ -96,6 +96,7 @@ lib = {
 	end,
 	project = function(a, b)
         if lib.is(a) and lib.is(b) then
+			if a.len == 0 or b.len == 0 then return lib.zero() end
 			return lib.dot(a, b) / b.sqrLen * b
 		end
 	end,
