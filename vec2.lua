@@ -2,6 +2,7 @@ local _PATH = (...):match("(.-)[^%.]+$")
 
 local sqrt, abs, sin, cos, atan2 = math.sqrt, math.abs, math.sin, math.cos, math.atan2
 local fstr = string.format
+local ntostr = function(n) return tostring(n):match("^(.-%..-)0000.*$") or tostring(n) end
 local isn, nbetween = function(x) return type(x) == 'number' end, function(x, a, b) return x >= a and x <= b end
 local ang = function(x) return math.pi - ((math.pi - x) % (2*math.pi)) end
 
@@ -163,7 +164,7 @@ mt = {
     end,
 	__unm = function(v) return lib.new(-v.x, -v.y) end,
 	__len = function(v) return v.len end,
-	__tostring = function(v) return fstr('%f,%f', v.x, v.y) end,
+	__tostring = function(v) return fstr('(%s, %s)', ntostr(v.x), ntostr(v.y)) end,
 	__index = function(v, k) if k == "len" then return sqrt(v:dot(v)) elseif k == "sqrLen" then return v:dot(v) elseif k == "norm" then return v:normal() else return lib[k] end end
 }
 

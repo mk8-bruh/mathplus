@@ -3,6 +3,7 @@ local _PATH = (...):match("(.-)[^%.]+$")
 local abs, min, max = math.abs, math.min, math.max
 local sign = function(x) return x ~= 0 and x / abs(x) or 0 end
 local fstr = string.format
+local ntostr = function(n) return tostring(n):match("^(.-%..-)0000.*$") or tostring(n) end
 local isn, nbetween = function(x) return type(x) == 'number' end, function(x, a, b) return x >= a and x <= b end
 local eq, lt, gt = function(a, b) return a == b end, function(a, b) return a < b end, function(a, b) return a > b end
 
@@ -138,6 +139,7 @@ lib = {
         end, t, 0
     end,
     range = function(a, b, s)
+        if s == 0 then return lib.new() end
         s = s or 1
         if not b then a, b = 1, a end
         if isn(a) and isn(b) and isn(s) then
@@ -152,6 +154,7 @@ lib = {
         end
     end,
     forrange = function(l, a, b, s)
+        if s == 0 then return lib.new() end
         s = s or 1
         if not b then a, b = 1, a end
         if isn(a) and isn(b) and isn(s) then
@@ -168,7 +171,8 @@ lib = {
         end
     end,
     segment = function(a, b, s)
-        if isn(a) and isn(b) then s = s or math.floor(abs(b - a) + 0.5) end
+        if s == 0 then return lib.new() end
+        if isn(a) and isn(b) then s = s or math.floor(max(abs(b - a), 0.5) + 0.5) end
         if isn(a) and isn(b) and isn(s) then
             s = abs(s)
             local r = lib.new()
@@ -179,7 +183,8 @@ lib = {
         end
     end,
     forsegment = function(l, a, b, s)
-        if isn(a) and isn(b) then s = s or math.floor(abs(b - a) + 0.5) end
+        if s == 0 then return lib.new() end
+        if isn(a) and isn(b) then s = s or math.floor(max(abs(b - a), 0.5) + 0.5) end
         if isn(a) and isn(b) and isn(s) then
             s = abs(s)
             local r = lib.new()
@@ -273,8 +278,8 @@ mt = {
         return r
     end,
 	__tostring = function(s)
-        local r = ""
-        for i = 1, #s do r = r .. tostring(s[i]) .. (i < #s and ", " or "") end
+        local r = "["
+        for i = 1, #s do r = r .. ntostr(s[i]) .. (i < #s and ", " or "]") end
         return r
     end,
 	__index = function(s, k) return lib[k] end

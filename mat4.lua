@@ -3,6 +3,7 @@ local _PATH = (...):match("(.-)[^%.]+$")
 local sqrt, abs, sin, cos, asin, acos, atan2 = math.sqrt, math.abs, math.sin, math.cos, math.asin, math.acos, math.atan2
 local sign = function(x) return x ~= 0 and x / abs(x) or 0 end
 local fstr = string.format
+local ntostr = function(n) return tostring(n):match("^(.-%..-)0000.*$") or tostring(n) end
 local isn, nbetween = function(x) return type(x) == 'number' end, function(x, a, b) return x >= a and x <= b end
 
 local seq  = require(_PATH.."seq" )
@@ -149,13 +150,13 @@ mt = {
         local maxl = {0, 0, 0, 0}
         for i = 0, 12, 4 do
             for j = 1, 4 do
-                maxl[j] = math.max(maxl[j], #tostring(v[i+j]))
+                maxl[j] = math.max(maxl[j], #ntostr(v[i+j]))
             end
         end
         local s = ""
         for i = 0, 12, 4 do
             for j = 1, 4 do
-                s = s .. string.rep(" ", maxl[j] - #tostring(v[i+j])) .. tostring(v[i+j]) .. (j~=4 and ", " or "")
+                s = s .. string.rep(" ", maxl[j] - #ntostr(v[i+j])) .. ntostr(v[i+j]) .. (j~=4 and ", " or "")
             end
             if i < 12 then s = s .. ",\n" end
         end

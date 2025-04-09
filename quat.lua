@@ -3,6 +3,7 @@ local _PATH = (...):match("(.-)[^%.]+$")
 local sqrt, abs, sin, cos, asin, acos, atan2 = math.sqrt, math.abs, math.sin, math.cos, math.asin, math.acos, math.atan2
 local sign = function(x) return x ~= 0 and x / abs(x) or 0 end
 local fstr = string.format
+local ntostr = function(n) return tostring(n):match("^(.-%..-)0000.*$") or tostring(n) end
 local isn, nbetween = function(x) return type(x) == 'number' end, function(x, a, b) return x >= a and x <= b end
 
 local vec3 = require(_PATH.."vec3")
@@ -137,7 +138,7 @@ mt = {
     end,
     __unm = function(q) return lib.new(-q.x, -q.y, -q.z, -q.w) end,
     __len = function(q) return q.len end,
-    __tostring = function(q) return fstr('%f,%f,%f,%f', q.x, q.y, q.z, q.w) end,
+    __tostring = function(q) return fstr('<%s, %s, %s, %s>', ntostr(q.x), ntostr(q.y), ntostr(q.z), ntostr(q.w)) end,
     __index = function(q, k)
         if k == "len" then return sqrt(q.sqrLen)
         elseif k == "sqrLen" then return q:dot(q)
